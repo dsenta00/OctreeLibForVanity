@@ -1,0 +1,50 @@
+﻿Build started 15.9.2018. 21:35:53.
+     1>Project "C:\Users\dse\Desktop\Vanity\Library\Engine\Engine.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\dse\Desktop\Vanity\Library\Engine\ /I"Generated Files\\" /IRelease\ /Zi /ZW /ZW:nostdlib /nologo /W3 /WX- /sdl /MP /O2 /Oi /Oy- /GL /D _UNICODE /D UNICODE /D WINAPI_FAMILY=WINAPI_FAMILY_APP /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"pch.h" /Fp"Release\Engine.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /FU"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\References\CommonConfiguration\neutral\platform.winmd" /FU"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral\Windows.winmd" /FU"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral\Windows.winmd" /analyze- /errorReport:prompt pch.cpp
+         pch.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\dse\Desktop\Vanity\Library\Engine\ /I"Generated Files\\" /IRelease\ /Zi /ZW /ZW:nostdlib /nologo /W3 /WX- /sdl /MP /O2 /Oi /Oy- /GL /D _UNICODE /D UNICODE /D WINAPI_FAMILY=WINAPI_FAMILY_APP /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"pch.h" /Fp"Release\Engine.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /FU"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\References\CommonConfiguration\neutral\platform.winmd" /FU"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral\Windows.winmd" /FU"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral\Windows.winmd" /analyze- /errorReport:prompt Core\App.cpp Core\Common\DeviceResources.cpp Core\Content\RendererBase3D.cpp Core\Content\SampleFpsTextRenderer.cpp "Core\Engine Main.cpp" "Pipeline Resources\Resource Factory.cpp" "Pipeline Resources\Textures\Texture2D.cpp" "Pipeline Stages\State Factory.cpp" Repository\OctreeLib\Octree\Octree.cpp Repository\OctreeLib\Octree\OctreeHandler.cpp Repository\OctreeLib\Octree\OctreeLeaf.cpp Repository\Repository.cpp "Scene\Cameras\FirstPerson Camera.cpp" "Scene\Input\Input Controller.cpp" "Third Party\DirectX Tool Kit\DDS\DDSTextureLoader.cpp" "Third Party\DirectX Tool Kit\VertexTypes.cpp" "Third Party\DirectX Tool Kit\WIC\WICTextureLoader.cpp"
+         App.cpp
+         DeviceResources.cpp
+         RendererBase3D.cpp
+         SampleFpsTextRenderer.cpp
+         Engine Main.cpp
+         Resource Factory.cpp
+         Texture2D.cpp
+         State Factory.cpp
+         Octree.cpp
+         OctreeHandler.cpp
+         OctreeLeaf.cpp
+         Repository.cpp
+         FirstPerson Camera.cpp
+         Input Controller.cpp
+         DDSTextureLoader.cpp
+         VertexTypes.cpp
+         WICTextureLoader.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\dse\Desktop\Vanity\Library\Release\Engine\Engine.lib" /NOLOGO /LTCG "/ignore: 4264" Release\App.obj
+         Release\DeviceResources.obj
+         Release\RendererBase3D.obj
+         Release\SampleFpsTextRenderer.obj
+         "Release\Engine Main.obj"
+         Release\pch.obj
+         "Release\Resource Factory.obj"
+         Release\Texture2D.obj
+         "Release\State Factory.obj"
+         Release\Octree.obj
+         Release\OctreeHandler.obj
+         Release\OctreeLeaf.obj
+         Release\Repository.obj
+         "Release\FirstPerson Camera.obj"
+         "Release\Input Controller.obj"
+         Release\DDSTextureLoader.obj
+         Release\VertexTypes.obj
+         Release\WICTextureLoader.obj
+         Engine.vcxproj -> C:\Users\dse\Desktop\Vanity\Library\Release\Engine\Engine.lib
+       _GenerateProjectPriFileCore:
+         C:\Program Files (x86)\Windows Kits\8.1\bin\x64\MakePri.exe New -ProjectRoot C:\Users\dse\Desktop\Vanity\Library\Engine\ -ConfigXml Release\priconfig.xml -OutputFile C:\Users\dse\Desktop\Vanity\Library\Release\Engine\Engine.pri -IndexName Engine -Verbose -Overwrite  
+     1>Done Building Project "C:\Users\dse\Desktop\Vanity\Library\Engine\Engine.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:11.62

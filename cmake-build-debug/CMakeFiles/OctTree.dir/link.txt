@@ -1,2 +1,0 @@
-C:/cygwin64/bin/ar.exe qc libOctTree.a  CMakeFiles/OctTree.dir/Octree.cpp.o CMakeFiles/OctTree.dir/OctreeLeaf.cpp.o CMakeFiles/OctTree.dir/Vertex.cpp.o CMakeFiles/OctTree.dir/Vector4.cpp.o CMakeFiles/OctTree.dir/Model.cpp.o
-C:/cygwin64/bin/ranlib.exe libOctTree.a
