@@ -9,7 +9,7 @@ Octree::Octree()
 }
 
 void
-Octree::insert(const DirectX::VertexPositionColor *position)
+Octree::insert(const Vertex *position)
 {
     this->root = OctreeHandler::insert(new OctreeLeaf(position), this->root);
     count++;
@@ -36,13 +36,40 @@ Octree::clear()
     this->count = 0;
 }
 
+
+void 
+Octree::foreach(std::function<void(const Pos3 *position)> doSomething)
+{
+    OctreeHandler::iterateNext(this->root, doSomething);
+}
+
+size_t 
+Octree::getCount()
+{
+    return this->count;
+}
+
+
 Octree::~Octree()
 {
     this->clear();
 }
 
+
+const Pos3 * 
+Octree::getRoot()
+{
+    return !this->root ? nullptr : this->root->getPosition();
+}
+
+const Pos3 *
+Octree::furthestPointAccordingToDirection(Pos3 &direction)
+{
+    return OctreeHandler::furthestPointAccordingToDirection(this, direction);
+}
+
 OctreeLeaf *
-Octree::findNearest(DirectX::XMFLOAT3 &position)
+Octree::findNearest(Pos3 &position)
 {
     std::vector<OctreeLeaf *> vertices;
 
@@ -56,4 +83,11 @@ bool
 Octree::collidesWith(Octree &anotherOctree)
 {
     return OctreeHandler::collides(this, &anotherOctree);
+}
+
+
+Pos3 
+Octree::averagePoint()
+{
+    return OctreeHandler::averagePoint(this);
 }

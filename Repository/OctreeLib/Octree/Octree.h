@@ -8,13 +8,19 @@ class Octree {
 public:
     Octree();
 
-    void insert(const DirectX::VertexPositionColor *position);
+    void insert(const Vertex *position);
     void print();
     void clear();
-    OctreeLeaf *findNearest(DirectX::XMFLOAT3 &position);
-    bool collidesWith(Octree &anotherOctree);
-    ~Octree();
+    void foreach(std::function<void(const Pos3 *position)> doSomething);
+    size_t getCount();
+    const Pos3 *getRoot();
 
+    OctreeLeaf *findNearest(Pos3 &position);
+    const Pos3 *furthestPointAccordingToDirection(Pos3 &direction);
+    Pos3 averagePoint();
+    bool collidesWith(Octree &anotherOctree);
+
+    ~Octree();
 protected:
     OctreeLeaf *root;
     size_t count;

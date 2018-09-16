@@ -2,12 +2,12 @@
 #include "Repository.h"
 #include "Utilities.h"
 #include "Repository/OctreeLib/Octree/OctreeHandler.h"
+#include "Repository/OctreeLib/Octree/Pos3Handler.h"
 
 // PRIVATE REPOSITORY GLOBAL VARIABLE
 static std::map<std::string, std::shared_ptr<Octree>> repo;
 
 // PRIVATE FUNCTIONS
-
 static std::string
 createUniqueName(std::string name)
 {
@@ -28,7 +28,6 @@ createUniqueName(std::string name)
 }
 
 // PUBLIC FUNCTIONS
-
 void
 Repository::create(std::string name)
 {
@@ -39,14 +38,14 @@ Repository::create(std::string name)
 }
 
 void 
-Repository::addNewVertex(std::string name, const DirectX::VertexPositionColor *vertex)
+Repository::addNewVertex(std::string name, const Vertex *vertex)
 {
     Octree *tree = Repository::get(name);
 
     if (!tree)
     {
         // TODO: Add DebugPrint instead of std::cout
-        std::cout << "Failed to insert vertex " << OctreeHandler::XMFLOAT3_ToString(&vertex->position);
+        std::cout << "Failed to insert vertex " << Pos3Handler::toString(&vertex->position);
         return;
     }
 

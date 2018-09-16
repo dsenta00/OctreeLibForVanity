@@ -235,6 +235,7 @@
     <ClInclude Include="Repository\OctreeLib\Octree\Octree.h" />
     <ClInclude Include="Repository\OctreeLib\Octree\OctreeHandler.h" />
     <ClInclude Include="Repository\OctreeLib\Octree\OctreeLeaf.h" />
+    <ClInclude Include="Repository\OctreeLib\Octree\Pos3Handler.h" />
     <ClInclude Include="Repository\Repository.h" />
     <ClInclude Include="Scene\Cameras\Camera Base.h" />
     <ClInclude Include="Scene\Cameras\FirstPerson Camera.h" />
@@ -274,6 +275,7 @@
     <ClCompile Include="Repository\OctreeLib\Octree\Octree.cpp" />
     <ClCompile Include="Repository\OctreeLib\Octree\OctreeHandler.cpp" />
     <ClCompile Include="Repository\OctreeLib\Octree\OctreeLeaf.cpp" />
+    <ClCompile Include="Repository\OctreeLib\Octree\Pos3Handler.cpp" />
     <ClCompile Include="Repository\Repository.cpp" />
     <ClCompile Include="Scene\Cameras\FirstPerson Camera.cpp" />
     <ClCompile Include="Scene\Input\Input Controller.cpp" />

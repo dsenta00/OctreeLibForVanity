@@ -20,11 +20,17 @@ namespace OctreeHandler {
 
     void print(OctreeLeaf *leaf);
 
-    void findNearest(std::vector<OctreeLeaf *> &vertices, DirectX::XMFLOAT3 &position, OctreeLeaf *current);
+    void findNearest(std::vector<OctreeLeaf *> &vertices, Pos3 &position, OctreeLeaf *current);
+
+    const Pos3 *furthestPointAccordingToDirection(Octree* o, Pos3 &direction);
+
+    void iterateNext(OctreeLeaf *leaf, std::function<void(const Pos3 *position)> doSomething);
+
+    Pos3 averagePoint(Octree *o);
+
+    Pos3 minkowskiSumSupport(Octree *o1, Octree *o2, Pos3 &direction);
 
     bool collides(Octree *o1, Octree *o2);
-
-    std::string XMFLOAT3_ToString(const DirectX::XMFLOAT3 *vertex);
 };
 
 

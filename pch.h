@@ -33,6 +33,7 @@
 #include <DirectXColors.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
+#include <Third Party/DirectX Tool Kit/VertexTypes.h>
 
 // PPL includes
 #include <ppltasks.h>
@@ -52,3 +53,6 @@
 #include <map>
 #include <algorithm>
 #include <iostream>
+
+typedef DirectX::XMFLOAT3 Pos3;
+typedef DirectX::VertexPositionColor Vertex;

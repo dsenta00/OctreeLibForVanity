@@ -134,6 +134,9 @@
     <ClCompile Include="Repository\Repository.cpp">
       <Filter>Repository</Filter>
     </ClCompile>
+    <ClCompile Include="Repository\OctreeLib\Octree\Pos3Handler.cpp">
+      <Filter>Repository\OctreeLib\Octree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -283,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="Repository\Repository.h">
       <Filter>Repository</Filter>
+    </ClInclude>
+    <ClInclude Include="Repository\OctreeLib\Octree\Pos3Handler.h">
+      <Filter>Repository\OctreeLib\Octree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
