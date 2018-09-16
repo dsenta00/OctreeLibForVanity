@@ -78,13 +78,11 @@ Octree::findNearest(Pos3 &position)
     return vertices.empty() ? nullptr : vertices.back();
 }
 
-
-bool 
+bool
 Octree::collidesWith(Octree &anotherOctree)
 {
     return OctreeHandler::collides(this, &anotherOctree);
 }
-
 
 Pos3 
 Octree::averagePoint()

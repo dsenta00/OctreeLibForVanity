@@ -21,7 +21,11 @@
 // Standard WinRT includes
 #include <wrl.h>
 #include <wrl/client.h>
-#include <agile.h>	// agile.h can only be used with /ZW
+
+#if defined(__cplusplus_winrt)
+#  include <agile.h>	// agile.h can only be used with /ZW
+#endif
+
 #include <concrt.h>
 
 // DirectX 11.2 includes
@@ -33,7 +37,23 @@
 #include <DirectXColors.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
+
+#if defined(__cplusplus_winrt)
 #include <Third Party/DirectX Tool Kit/VertexTypes.h>
+
+#ifndef DIRECTX_DATA_STRUCTURES
+#define DIRECTX_DATA_STRUCTURES
+typedef DirectX::XMFLOAT3 Pos3;
+typedef DirectX::VertexPositionColor Vertex;
+#endif
+
+#else
+#ifndef DIRECTX_DATA_STRUCTURES
+#define DIRECTX_DATA_STRUCTURES
+typedef struct { float x; float y; float z; } Pos3;
+typedef struct { Pos3 position; } Vertex;
+#endif
+#endif
 
 // PPL includes
 #include <ppltasks.h>
@@ -53,6 +73,3 @@
 #include <map>
 #include <algorithm>
 #include <iostream>
-
-typedef DirectX::XMFLOAT3 Pos3;
-typedef DirectX::VertexPositionColor Vertex;

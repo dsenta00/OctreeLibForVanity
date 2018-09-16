@@ -1,8 +1,13 @@
 #include "pch.h"
 #include "Repository.h"
-#include "Utilities.h"
+
+#if defined(__cplusplus_winrt)
 #include "Repository/OctreeLib/Octree/OctreeHandler.h"
 #include "Repository/OctreeLib/Octree/Pos3Handler.h"
+#else
+#include "OctreeLib/Octree/OctreeHandler.h"
+#include "OctreeLib/Octree/Pos3Handler.h"
+#endif
 
 // PRIVATE REPOSITORY GLOBAL VARIABLE
 static std::map<std::string, std::shared_ptr<Octree>> repo;
@@ -55,7 +60,8 @@ Repository::addNewVertex(std::string name, const Vertex *vertex)
 }
 
 
-Octree *get(std::string name)
+Octree *
+Repository::get(std::string name)
 {
     auto it = repo.find(name);
 

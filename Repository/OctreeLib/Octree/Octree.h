@@ -1,7 +1,7 @@
 #ifndef OCTTREE_LIBRARY_H
 #define OCTTREE_LIBRARY_H
 
-#include "pch.h"
+#include "../../../pch.h"
 #include "OctreeLeaf.h"
 
 class Octree {

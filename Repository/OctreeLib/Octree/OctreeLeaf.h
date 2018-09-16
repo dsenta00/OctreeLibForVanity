@@ -5,7 +5,7 @@
 #ifndef OCTREE_OCTREELEAF_H
 #define OCTREE_OCTREELEAF_H
 
-#include "pch.h"
+#include "../../../pch.h"
 
 #define NUMBER_OF_LEAFS (8)
 

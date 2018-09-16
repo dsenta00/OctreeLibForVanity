@@ -28,6 +28,9 @@ namespace vxe {
 
         MeshBase() : _vertexbuffer{ nullptr }, _indexbuffer{ nullptr }, _indexed{ false } { }
 
+        /**
+         * Check collision between objects and print into debug output
+         */
         void checkCollisionAndPrint()
         {
             DebugPrint(std::string("\t -- A lambda: Checking collision ... \n"));
@@ -59,13 +62,17 @@ namespace vxe {
 
             for (auto &vertex : vertices)
             {
-                DebugPrint(std::string("\t -- A lambda: Persisting vertex ")
+                DebugPrint(std::string("\t -- A lambda: -> Persisting vertex ")
                            .append(Pos3Handler::toString(&vertex))
                            .append(" to octree ")
                            .append(persistedName)
+                           .append(" and closest point (so far in the same octree) is ")
+                           .append(Pos3Handler::toString(Repository::get(persistedName)->findNearest(vertex)))
                            .append(" ... \n"));
 
                 Repository::addNewVertex(persistedName, &vertex);
+
+                DebugPrint()
             }
         }
 
