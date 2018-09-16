@@ -28,13 +28,15 @@ createUniqueName(std::string name)
 }
 
 // PUBLIC FUNCTIONS
-void
+std::string
 Repository::create(std::string name)
 {
     int i = 0;
     std::string persistName = createUniqueName(name);
 
     repo[persistName] = std::shared_ptr<Octree>(new Octree());
+
+    return persistName;
 }
 
 void 

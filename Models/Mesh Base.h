@@ -9,172 +9,223 @@
 //
 
 #include "pch.h"
-
 #include "..\Utilities.h"
-
 #include "..\Third Party\DirectX Tool Kit\VertexTypes.h"
-
+#include "..\Repository\Repository.h"
+#include "..\Repository\OctreeLib\Octree\Pos3Handler.h"
 #include "..\Pipeline Resources\Buffers\Vertex Buffer.h"
 #include "..\pipeline Resources\Buffers\Index Buffer.h"
 
 namespace vxe {
 
-	// T is a vertex type
-	// U can be unsigned int or unsigned short 
-	template <typename T, typename U> class MeshBase {
+    // T is a vertex type
+    // U can be unsigned int or unsigned short 
+    template <typename T, typename U> class MeshBase {
 
-	public:
-		using value_type1 = T;
-		using value_type2 = U;
+    public:
+        using value_type1 = T;
+        using value_type2 = U;
 
-		MeshBase() : _vertexbuffer{ nullptr }, _indexbuffer{ nullptr }, _indexed{ false } { }
+        MeshBase() : _vertexbuffer{ nullptr }, _indexbuffer{ nullptr }, _indexed{ false } { }
 
-		concurrency::task<void> CreateAsync(_In_ ID3D11Device2* device,
-			std::vector<T>& vertices,
-			std::vector<U>& indices,
-			D3D11_PRIMITIVE_TOPOLOGY topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-		{
-			DebugPrint(std::string("\t MeshBase<") + typeid(T).name() + 
-				std::string(",") + typeid(U).name() + std::string(">::CreateAsync() ...\n"));
+        void checkCollisionAndPrint()
+        {
+            DebugPrint(std::string("\t -- A lambda: Checking collision ... \n"));
 
-			DebugPrint(std::string("\t\t Primitive Topology: ") + std::to_string(topology) + std::string("\n"));
+            auto octrees = Repository::get();
 
-			_topology = topology;
-			_vertexcount = (unsigned int) vertices.size();
-			_vertices = &vertices[0];
+            for (int i = 0; i < (octrees.size() - 1); i++)
+            {
+                for (int j = i + 1; j < octrees.size(); j++)
+                {
+                    if (octrees[i].collidesWith(octrees[j]))
+                    {
+                        DebugPrint(std::string("\t -- A lambda: Checking collision ... \n"));
+                    }
+                }
+            }
+        }
 
-			return concurrency::create_task([this, device, vertices, indices]() {
+        /**
+         * Add new octree by using real vertices
+         */
+        void addNewOctree(std::vector<T>& vertices)
+        {
+            std::string persistedName = Repository::create("object");
 
-				DebugPrint(std::string("\t -- A lambda: Creating a VB ... \n"));
+            DebugPrint(std::string("\t -- A lambda: Persisted empty octree named ")
+                       .append(persistedName)
+                       .append(" ... \n"));
 
-				//	if (vertices.empty()) throw std::exception("...");
+            for (auto &vertex : vertices)
+            {
+                DebugPrint(std::string("\t -- A lambda: Persisting vertex ")
+                           .append(Pos3Handler::toString(&vertex))
+                           .append(" to octree ")
+                           .append(persistedName)
+                           .append(" ... \n"));
 
-				_vertexbuffer = std::make_shared<VertexBuffer<T>>(device, &vertices[0], _vertexcount);
+                Repository::addNewVertex(persistedName, &vertex);
+            }
+        }
 
-				if (!indices.empty()) {
-					DebugPrint(std::string("\t -- A lambda: Creating an IB ... \n"));
-					_indexed = true;
+        concurrency::task<void> CreateAsync(_In_ ID3D11Device2* device,
+                                            std::vector<T>& vertices,
+                                            std::vector<U>& indices,
+                                            D3D11_PRIMITIVE_TOPOLOGY topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+        {
+            DebugPrint(std::string("\t MeshBase<") + typeid(T).name() +
+                       std::string(",") + typeid(U).name() + std::string(">::CreateAsync() ...\n"));
 
-					_indexcount = (unsigned) indices.size();
-					_indices = const_cast<U*> (&indices[0]);
-					_indexbuffer = std::make_shared<IndexBuffer<U>>(device, violent_cast<void *> (&indices[0]), _indexcount);
+            DebugPrint(std::string("\t\t Primitive Topology: ") + std::to_string(topology) + std::string("\n"));
 
-					if (typeid(U) == typeid (unsigned short)) {
-						_format = DXGI_FORMAT_R16_UINT;
-						DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R16_UINT \n"));
-					}
-					else {
-						_format = DXGI_FORMAT_R32_UINT;
-						DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R32_UINT \n"));
-					}
-				}
-			});
-		}
+            _topology = topology;
+            _vertexcount = (unsigned int)vertices.size();
+            _vertices = &vertices[0];
 
-		// Model is hardcoded inn memory
-		virtual concurrency::task<void> CreateAsync(_In_ ID3D11Device2* device) = 0;
+            return concurrency::create_task([this, device, vertices, indices]() {
 
-		// Creation from a file
-		virtual concurrency::task<void> LoadAsync(_In_ ID3D11Device2* device, const std::wstring& filename)
-		{
-			DebugPrint(std::string("\t MeshBase<") + typeid(T).name() + 
-				std::string(",") + typeid(U).name() + std::string(">::CreateAsync()...\n"));
+                DebugPrint(std::string("\t -- A lambda: Creating a vertex buffer ... \n"));
 
-			_topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+                //	if (vertices.empty()) throw std::exception("...");
 
-			DebugPrint(std::string("\t\t Primitive Topology: ") + std::to_string(_topology) + std::string("\n"));
+                addNewOctree(vertices);
+                checkCollisionAndPrint();
 
-			return concurrency::create_task(DX::ReadDataAsync(filename)).then([this, device](const std::vector<byte> data)
-			{
-				DebugPrint(std::string("\t -- A lambda: Creating a VB and an IB ... \n"));
+                _vertexbuffer = std::make_shared<VertexBuffer<T>>(device, &vertices[0], _vertexcount);
 
-				unsigned char *p = const_cast<unsigned char*>(&data[0]);
+                if (!indices.empty()) 
+                {
+                    DebugPrint(std::string("\t -- A lambda: Creating an IB ... \n"));
+                    _indexed = true;
 
-				_vertexcount = *reinterpret_cast<unsigned int*>(p);
-				_indexcount = *reinterpret_cast<unsigned int*>(p + sizeof(unsigned));
+                    _indexcount = (unsigned)indices.size();
+                    _indices = const_cast<U*> (&indices[0]);
+                    _indexbuffer = std::make_shared<IndexBuffer<U>>(device, violent_cast<void *> (&indices[0]), _indexcount);
 
-				_vertices = reinterpret_cast<T*>(p + 2 * sizeof(unsigned int));
-				_indices = reinterpret_cast<U*>(p + 2 * sizeof(unsigned int) + sizeof(T) * _vertexcount);
+                    if (typeid(U) == typeid (unsigned short)) 
+                    {
+                        _format = DXGI_FORMAT_R16_UINT;
+                        DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R16_UINT \n"));
+                    }
+                    else 
+                    {
+                        _format = DXGI_FORMAT_R32_UINT;
+                        DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R32_UINT \n"));
+                    }
+                }
+            });
+        }
 
-				_vertexbuffer = std::make_shared<VertexBuffer<T>>(device, _vertices, _vertexcount);
+        // Model is hardcoded inn memory
+        virtual concurrency::task<void> CreateAsync(_In_ ID3D11Device2* device) = 0;
 
-				if (_indexcount != 0) {
+        // Creation from a file
+        virtual concurrency::task<void> LoadAsync(_In_ ID3D11Device2* device, const std::wstring& filename)
+        {
+            DebugPrint(std::string("\t MeshBase<") + typeid(T).name() +
+                       std::string(",") + typeid(U).name() + std::string(">::CreateAsync()...\n"));
 
-					_indexed = true;
-					_indexbuffer = std::make_shared<IndexBuffer<U>>(device, violent_cast<void *> (_indices), _indexcount);
+            _topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-					if (typeid(U) == typeid (unsigned short)) {
-						_format = DXGI_FORMAT_R16_UINT;
-						DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R16_UINT \n"));
-					}
-					else {
-						_format = DXGI_FORMAT_R32_UINT;
-						DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R32_UINT \n"));
-					}
-				}
-				else {
-					_indexed = false;
-				}
+            DebugPrint(std::string("\t\t Primitive Topology: ") + std::to_string(_topology) + std::string("\n"));
 
-				DebugPrint(std::string("\t -- A lambda: a VB and an IB are created. \n"));
-			});
-		}
+            return concurrency::create_task(DX::ReadDataAsync(filename)).then([this, device](const std::vector<byte> data) {
+                DebugPrint(std::string("\t -- A lambda: Creating a VB and an IB ... \n"));
 
-		// Creation by parsing from memory
-		virtual concurrency::task<void> CreateAsync(_In_ ID3D11Device2* device, const std::vector<char>& memory) = 0;
+                unsigned char *p = const_cast<unsigned char*>(&data[0]);
 
-		virtual void BindVertexBuffer(_In_ ID3D11DeviceContext2* context, 
-			int slot = 0, 
-			unsigned count = 1, 
-			unsigned offset = 0)
-		{
-			/*DebugPrint(std::string("\t MeshBase<") + typeid(T).name() + 
-				std::string(",") + typeid(U).name() + std::string(">::BindVertexBuffer() ...\n"));*/
+                _vertexcount = *reinterpret_cast<unsigned int*>(p);
+                _indexcount = *reinterpret_cast<unsigned int*>(p + sizeof(unsigned));
 
-			_vertexbuffer->Bind(context, slot, count, offset);
-			context->IASetPrimitiveTopology(_topology);
-		}
+                _vertices = reinterpret_cast<T*>(p + 2 * sizeof(unsigned int));
+                _indices = reinterpret_cast<U*>(p + 2 * sizeof(unsigned int) + sizeof(T) * _vertexcount);
 
-		virtual void BindIndexBuffer(_In_ ID3D11DeviceContext2* context, unsigned offset = 0)
-		{
-			/*DebugPrint(std::string("\t MeshBase<") + typeid(T).name() + std::string(",") + 
-				typeid(U).name() + std::string(">::BindIndexBuffer() ...\n"));*/
+                _vertexbuffer = std::make_shared<VertexBuffer<T>>(device, _vertices, _vertexcount);
 
-			if (_indexed) _indexbuffer->Bind(context, _format, offset);
-		}
+                addNewOctree(_vertices);
+                checkCollisionAndPrint();
 
-		virtual void Draw(_In_ ID3D11DeviceContext2* context, unsigned start = 0)
-		{
-			context->Draw(_vertexcount, start);
-		}
+                if (_indexcount != 0) 
+                {
+                    _indexed = true;
+                    _indexbuffer = std::make_shared<IndexBuffer<U>>(device, violent_cast<void *> (_indices), _indexcount);
 
-		virtual void DrawIndexed(_In_ ID3D11DeviceContext2* context, unsigned startindex = 0, unsigned startvertex = 0)
-		{
-			if (_indexed) context->DrawIndexed(_indexcount, startindex, startvertex);
-		}
+                    if (typeid(U) == typeid (unsigned short)) 
+                    {
+                        _format = DXGI_FORMAT_R16_UINT;
+                        DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R16_UINT \n"));
+                    }
+                    else 
+                    {
+                        _format = DXGI_FORMAT_R32_UINT;
+                        DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R32_UINT \n"));
+                    }
+                }
+                else 
+                {
+                    _indexed = false;
+                }
 
-		T* GetVertices() { return _vertices; }
-		unsigned GetVertexCount() { return _vertexcount; }
+                DebugPrint(std::string("\t -- A lambda: a VB and an IB are created. \n"));
+            });
+        }
 
-		void Reset()
-		{
-			DebugPrint(std::string("\t MeshBase<") + typeid(T).name() + std::string(",") + typeid(U).name() + std::string(">::Reset() ...\n"));
+        // Creation by parsing from memory
+        virtual concurrency::task<void> CreateAsync(_In_ ID3D11Device2* device, const std::vector<char>& memory) = 0;
 
-			_vertexbuffer->Reset();
-			_indexbuffer->Reset();
-		}
+        virtual void BindVertexBuffer(_In_ ID3D11DeviceContext2* context,
+                                      int slot = 0,
+                                      unsigned count = 1,
+                                      unsigned offset = 0)
+        {
+            /*DebugPrint(std::string("\t MeshBase<") + typeid(T).name() +
+                std::string(",") + typeid(U).name() + std::string(">::BindVertexBuffer() ...\n"));*/
 
-	protected:
-		unsigned _vertexcount;
-		std::shared_ptr<VertexBuffer<T>> _vertexbuffer;
-		T* _vertices;
+            _vertexbuffer->Bind(context, slot, count, offset);
+            context->IASetPrimitiveTopology(_topology);
+        }
 
-		bool _indexed;
-		unsigned _indexcount;
-		std::shared_ptr<IndexBuffer<U> > _indexbuffer;
-		U* _indices;
-		DXGI_FORMAT _format;
+        virtual void BindIndexBuffer(_In_ ID3D11DeviceContext2* context, unsigned offset = 0)
+        {
+            /*DebugPrint(std::string("\t MeshBase<") + typeid(T).name() + std::string(",") +
+                typeid(U).name() + std::string(">::BindIndexBuffer() ...\n"));*/
 
-		D3D11_PRIMITIVE_TOPOLOGY _topology;
-	};
+            if (_indexed) _indexbuffer->Bind(context, _format, offset);
+        }
+
+        virtual void Draw(_In_ ID3D11DeviceContext2* context, unsigned start = 0)
+        {
+            context->Draw(_vertexcount, start);
+        }
+
+        virtual void DrawIndexed(_In_ ID3D11DeviceContext2* context, unsigned startindex = 0, unsigned startvertex = 0)
+        {
+            if (_indexed) context->DrawIndexed(_indexcount, startindex, startvertex);
+        }
+
+        T* GetVertices() { return _vertices; }
+        unsigned GetVertexCount() { return _vertexcount; }
+
+        void Reset()
+        {
+            DebugPrint(std::string("\t MeshBase<") + typeid(T).name() + std::string(",") + typeid(U).name() + std::string(">::Reset() ...\n"));
+
+            _vertexbuffer->Reset();
+            _indexbuffer->Reset();
+        }
+
+    protected:
+        unsigned _vertexcount;
+        std::shared_ptr<VertexBuffer<T>> _vertexbuffer;
+        T* _vertices;
+
+        bool _indexed;
+        unsigned _indexcount;
+        std::shared_ptr<IndexBuffer<U> > _indexbuffer;
+        U* _indices;
+        DXGI_FORMAT _format;
+
+        D3D11_PRIMITIVE_TOPOLOGY _topology;
+    };
 }
