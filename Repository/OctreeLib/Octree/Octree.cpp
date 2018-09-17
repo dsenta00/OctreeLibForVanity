@@ -1,3 +1,10 @@
+//
+//	Octree.cpp
+//  Octal tree class definition.
+//
+//  © 2018 Vanity DirectX 11.2 Engine (VXE). Zoraja Consulting d.o.o. All rights reserved.
+//
+
 #include "pch.h"
 #include "Octree.h"
 #include "OctreeHandler.h"

@@ -100,7 +100,7 @@
     <ClCompile Include="..\OctreeHandler.cpp" />
     <ClCompile Include="..\OctreeLeaf.cpp" />
     <ClCompile Include="..\Pos3Handler.cpp" />
-    <ClCompile Include="unittest1.cpp" />
+    <ClCompile Include="OctreeTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

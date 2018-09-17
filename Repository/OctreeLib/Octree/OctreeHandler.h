@@ -1,9 +1,11 @@
 //
-// Created by dse on 25.8.2018..
+//	OctreeHandler.cpp
+//  Octal tree handler declaration.
+//
+//  © 2018 Vanity DirectX 11.2 Engine (VXE). Zoraja Consulting d.o.o. All rights reserved.
 //
 
-#ifndef OCTTREE_OCTREEHANDLER_H
-#define OCTTREE_OCTREEHANDLER_H
+#pragma once
 
 #include "pch.h"
 #include "OctreeLeaf.h"
@@ -32,6 +34,3 @@ namespace OctreeHandler {
 
     bool collides(Octree *o1, Octree *o2);
 };
-
-
-#endif //OCTTREE_OCTREEHANDLER_H

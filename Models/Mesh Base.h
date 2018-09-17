@@ -62,17 +62,19 @@ namespace vxe {
 
             for (auto &vertex : vertices)
             {
-                DebugPrint(std::string("\t -- A lambda: -> Persisting vertex ")
-                           .append(Pos3Handler::toString(&vertex))
-                           .append(" to octree ")
-                           .append(persistedName)
-                           .append(" and closest point (so far in the same octree) is ")
-                           .append(Pos3Handler::toString(Repository::get(persistedName)->findNearest(vertex)))
-                           .append(" ... \n"));
+                auto nearestPos = Repository::get(persistedName)
+                    ->findNearest(vertex.position)
+                    ->getPosition();
 
-                Repository::addNewVertex(persistedName, &vertex);
+                std::cout << std::string("\t -- A lambda: -> Persisting vertex ")
+                    .append(Pos3Handler::toString(&vertex.position))
+                    .append(" to octree ")
+                    .append(persistedName)
+                    .append(" and closest point (so far in the same octree) is ")
+                    .append(Pos3Handler::toString(nearestPos))
+                    .append(" ... \n") << std::endl;
 
-                DebugPrint()
+                Repository::addVertex(persistedName, &vertex);
             }
         }
 

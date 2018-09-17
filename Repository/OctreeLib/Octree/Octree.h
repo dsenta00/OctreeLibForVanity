@@ -1,5 +1,11 @@
-#ifndef OCTTREE_LIBRARY_H
-#define OCTTREE_LIBRARY_H
+//
+//	Octree.h
+//  Octal tree class declaration.
+//
+//  © 2018 Vanity DirectX 11.2 Engine (VXE). Zoraja Consulting d.o.o. All rights reserved.
+//
+
+#pragma once
 
 #include "../../../pch.h"
 #include "OctreeLeaf.h"
@@ -25,5 +31,3 @@ protected:
     OctreeLeaf *root;
     size_t count;
 };
-
-#endif

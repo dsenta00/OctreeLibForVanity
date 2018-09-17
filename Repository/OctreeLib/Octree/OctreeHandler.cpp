@@ -1,5 +1,8 @@
 //
-// Created by dse on 25.8.2018..
+//	OctreeHandler.cpp
+//  Octal tree handler definition.
+//
+//  © 2018 Vanity DirectX 11.2 Engine (VXE). Zoraja Consulting d.o.o. All rights reserved.
 //
 
 #include "pch.h"
@@ -66,9 +69,21 @@ OctreeHandler::findNearest(std::vector<OctreeLeaf *> &vertices, Pos3 &position, 
         return;
     }
 
+    if (vertices.empty())
+    {
+        vertices.insert(vertices.begin(), current);
+
+        for (OctreeLeaf *leaf : *current)
+        {
+            findNearest(vertices, position, leaf);
+        }
+
+        return;
+    }
+
     auto currentClosest = vertices.front();
 
-    if ((vertices.empty()) || (current->distanceFrom(&position) < currentClosest->distanceFrom(&position)))
+    if (current->distanceFrom(&position) < currentClosest->distanceFrom(&position))
     {
         vertices.insert(vertices.begin(), current);
 
@@ -229,14 +244,13 @@ OctreeHandler::furthestPointAccordingToDirection(Octree* o, Pos3 &direction)
     float maxProduct = Pos3Handler::dotProduct(direction, *furthest);
 
     o->foreach([&](const Pos3 *position) {
-
         float product = Pos3Handler::dotProduct(direction, *(Pos3 *)position);
 
-        if (product > maxProduct) {
+        if (product > maxProduct) 
+        {
             maxProduct = product;
             furthest = (Pos3 *)position;
         }
-
     });
 
     return furthest;

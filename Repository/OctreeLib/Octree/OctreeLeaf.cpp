@@ -1,5 +1,8 @@
 //
-// Created by dse on 2.6.2018..
+//	OctreeLeaf.cpp
+//  Octal tree leaf definition.
+//
+//  © 2018 Vanity DirectX 11.2 Engine (VXE). Zoraja Consulting d.o.o. All rights reserved.
 //
 
 #include "pch.h"

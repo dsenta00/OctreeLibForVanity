@@ -1,9 +1,11 @@
 //
-// Created by dse on 2.6.2018..
+//	OctreeLeaf.h
+//  Octal tree leaf declaration.
+//
+//  © 2018 Vanity DirectX 11.2 Engine (VXE). Zoraja Consulting d.o.o. All rights reserved.
 //
 
-#ifndef OCTREE_OCTREELEAF_H
-#define OCTREE_OCTREELEAF_H
+#pragma once
 
 #include "../../../pch.h"
 
@@ -20,5 +22,3 @@ public:
 protected:
     Vertex *v;
 };
-
-#endif //OCTREE_OCTREELEAF_H

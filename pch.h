@@ -39,19 +39,17 @@
 #include <DirectXCollision.h>
 
 #if defined(__cplusplus_winrt)
-#include <Third Party/DirectX Tool Kit/VertexTypes.h>
-
-#ifndef DIRECTX_DATA_STRUCTURES
-#define DIRECTX_DATA_STRUCTURES
-typedef DirectX::XMFLOAT3 Pos3;
-typedef DirectX::VertexPositionColor Vertex;
-#endif
-
+#  include <Third Party/DirectX Tool Kit/VertexTypes.h>
+#  ifndef DIRECTX_DATA_STRUCTURES
+#  define DIRECTX_DATA_STRUCTURES
+     typedef DirectX::XMFLOAT3 Pos3;
+     typedef DirectX::VertexPositionColor Vertex;
+#  endif
 #else
-#ifndef DIRECTX_DATA_STRUCTURES
-#define DIRECTX_DATA_STRUCTURES
-typedef struct { float x; float y; float z; } Pos3;
-typedef struct { Pos3 position; } Vertex;
+#  ifndef DIRECTX_DATA_STRUCTURES
+#  define DIRECTX_DATA_STRUCTURES
+     typedef struct { float x; float y; float z; } Pos3;
+     typedef struct { Pos3 position; } Vertex;
 #endif
 #endif
 
