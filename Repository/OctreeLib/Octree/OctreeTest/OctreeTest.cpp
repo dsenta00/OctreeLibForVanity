@@ -8,22 +8,22 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace OctreeTest
-{		
+{
     TEST_CLASS(OctreeTest)
-	{
+    {
         Pos3 CENTER_AXIS = Pos3{ 0.0f, 0.0f, 0.0f };
-	public:
-		
+    public:
+
         /**
          * Test create and get objects.
          */
-		TEST_METHOD(TestCreateAndGet)
-		{
+        TEST_METHOD(TestCreateAndGet)
+        {
 
             std::string results[4] = {
                 "object",
                 "object (1)",
-                "object (2)", 
+                "object (2)",
                 "object (3)",
             };
 
@@ -44,12 +44,12 @@ namespace OctreeTest
                 Octree *octree = Repository::get(result);
 
                 Assert::IsNotNull(octree);
-                Assert::AreEqual(octree->getCount(), (size_t)0);
+                Assert::IsTrue(octree->empty());
                 Assert::IsNull(octree->getRoot());
                 Assert::IsTrue(memcmp(&octree->averagePoint(), &CENTER_AXIS, sizeof(Pos3)) == 0);
                 Assert::IsNull(octree->findNearest(CENTER_AXIS));
             }
-		}
+        }
 
         TEST_METHOD(TestCreateAndInsertVertex)
         {
@@ -71,7 +71,7 @@ namespace OctreeTest
             {
                 OctreeLeaf *nearestPos = octree->findNearest(vertex.position);
 
-                if (octree->getCount() == 0)
+                if (octree->empty())
                 {
                     Assert::IsNull(nearestPos);
                 }
@@ -81,15 +81,83 @@ namespace OctreeTest
                 }
 
                 std::cout << std::string("\t -- A lambda: -> Persisting vertex ")
-                              .append(Pos3Handler::toString(&vertex.position))
-                              .append(" to octree ")
-                              .append(persistedName)
-                              .append(" and closest point (so far in the same octree) is ")
-                              .append(nearestPos == nullptr ? "(null)" : nearestPos->toString())
-                              .append(" ... \n") << std::endl;
+                    .append(Pos3Handler::toString(&vertex.position))
+                    .append(" to octree ")
+                    .append(persistedName)
+                    .append(" and closest point (so far in the same octree) is ")
+                    .append((nearestPos == nullptr) ? "(null)" : nearestPos->toString())
+                    .append(" ... \n") << std::endl;
 
                 Repository::addVertex(persistedName, &vertex);
             }
         }
-	};
-}
+
+        TEST_METHOD(TestObjectCollision)
+        {
+            std::string cubeName = Repository::create("cube");
+            Octree *cube = Repository::get(cubeName);
+            Assert::IsNotNull(cube);
+
+            std::string triangleName = Repository::create("triangle");
+            Octree *triangle = Repository::get(triangleName);
+            Assert::IsNotNull(triangle);
+
+            Assert::IsFalse(cube->collidesWith(*triangle));
+            Assert::IsFalse(triangle->collidesWith(*cube));
+
+            // ------- CUBE ------- 
+            std::vector<Vertex> cubeVertices = {
+                { Pos3{ 0, 0, 0 } },
+                { Pos3{ 1, 0, 0 } },
+                { Pos3{ 1, 1, 0 } },
+                { Pos3{ 0, 1, 0 } },
+                { Pos3{ 0, 1, 1 } },
+                { Pos3{ 1, 1, 1 } },
+                { Pos3{ 1, 0, 1 } },
+                { Pos3{ 0, 0, 1 } }
+            };
+
+            for (auto &vertex : cubeVertices)
+            {
+                Repository::addVertex(cubeName, &vertex);
+            }
+
+            Assert::IsFalse(cube->collidesWith(*triangle));
+            Assert::IsFalse(triangle->collidesWith(*cube));
+
+            // ------- TRIANGLE ------- 
+            std::vector<Vertex> triangleVertices = {
+                { Pos3{ 0, 0, 0 } },
+                { Pos3{ 1, 0, 0 } },
+                { Pos3{ 1, 1, 0 } }
+            };
+
+            for (auto &vertex : triangleVertices)
+            {
+                Repository::addVertex(triangleName, &vertex);
+            }
+
+            Assert::IsTrue(cube->collidesWith(*triangle));
+            Assert::IsTrue(triangle->collidesWith(*cube));
+
+            // ------- TRIANGLE FAR AWAY ------- 
+            std::string anotherTriangleName = Repository::create("triangle");
+            Octree *anotherTriangle = Repository::get(anotherTriangleName);
+            Assert::IsNotNull(anotherTriangle);
+
+            std::vector<Vertex> anotherTriangleVertices = {
+                { Pos3{ 12, 12, 12 } },
+                { Pos3{ 13, 12, 12 } },
+                { Pos3{ 13, 13, 12 } }
+            };
+
+            for (auto &vertex : anotherTriangleVertices)
+            {
+                Repository::addVertex(anotherTriangleName, &vertex);
+            }
+
+            Assert::IsFalse(cube->collidesWith(*anotherTriangle));
+            Assert::IsFalse(anotherTriangle->collidesWith(*cube));
+        };
+    };
+};

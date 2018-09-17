@@ -154,6 +154,11 @@ OctreeHandler::minkowskiSumSupport(Octree *o1, Octree *o2, Pos3 &direction)
 bool
 OctreeHandler::collides(Octree *o1, Octree *o2)
 {
+    if (o1->empty() || o2->empty())
+    {
+        return false;
+    }
+
     size_t index = 0; // index of current vertex of simplex
     Pos3 a, b, c, ao, ab, ac, abperp, acperp, simplex[3];
 

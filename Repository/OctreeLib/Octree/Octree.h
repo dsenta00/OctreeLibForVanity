@@ -19,6 +19,7 @@ public:
     void clear();
     void foreach(std::function<void(const Pos3 *position)> doSomething);
     size_t getCount();
+    bool empty();
     const Pos3 *getRoot();
 
     OctreeLeaf *findNearest(Pos3 &position);

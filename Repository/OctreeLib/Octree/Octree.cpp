@@ -56,12 +56,16 @@ Octree::getCount()
     return this->count;
 }
 
+bool 
+Octree::empty()
+{
+    return this->count == 0;
+}
 
 Octree::~Octree()
 {
     this->clear();
 }
-
 
 const Pos3 * 
 Octree::getRoot()
