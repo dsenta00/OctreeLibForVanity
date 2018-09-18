@@ -27,6 +27,23 @@ Pos3Handler::toString(const Pos3 *vertex)
 }
 
 /**
+* Position to wide string.
+*
+* @param vertex - the position pointer
+*
+* @return the wstring
+*/
+std::wstring
+Pos3Handler::toWideString(const Pos3 *vertex)
+{
+    std::wstringstream sstream;
+
+    sstream << "{ " << vertex->x << ", " << vertex->y << ", " << vertex->z << " }";
+
+    return sstream.str();
+}
+
+/**
  * Subtract two positions.
  *
  * @param v1 - first position
@@ -113,7 +130,7 @@ Pos3Handler::lengthSquared(Pos3 &position)
  * Return next perpendicular position according to given position.
  *
  * @param ab - input position
- *  
+ *
  * @return perpendicular position
  */
 Pos3

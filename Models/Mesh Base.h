@@ -35,7 +35,7 @@ namespace vxe {
         {
             DebugPrint(std::string("\t -- A lambda: Checking collision ... \n"));
 
-            auto octrees = Repository::get();
+            var octrees = Repository::get();
 
             for (int i = 0; i < (octrees.size() - 1); i++)
             {
@@ -43,7 +43,10 @@ namespace vxe {
                 {
                     if (octrees[i].collidesWith(octrees[j]))
                     {
-                        DebugPrint(std::string("\t -- A lambda: Checking collision ... \n"));
+                        DebugPrint(std::string("\t -- \tCollision detected -> ")
+                                   .append(octrees[i]->getName())
+                                   .append(" and ")
+                                   .append(octrees[j]->getName()));
                     }
                 }
             }
@@ -60,11 +63,9 @@ namespace vxe {
                        .append(persistedName)
                        .append(" ... \n"));
 
-            for (auto &vertex : vertices)
+            for (var vertex : vertices)
             {
-                auto nearestPos = Repository::get(persistedName)
-                    ->findNearest(vertex.position)
-                    ->getPosition();
+                var nearestPos = Repository::get(persistedName)->findNearest(vertex.position)->getPosition();
 
                 std::cout << std::string("\t -- A lambda: -> Persisting vertex ")
                     .append(Pos3Handler::toString(&vertex.position))

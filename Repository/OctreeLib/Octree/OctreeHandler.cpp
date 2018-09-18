@@ -10,11 +10,11 @@
 #include "Pos3Handler.h"
 
 /**
-*
-* @param leaf
-* @param current
-* @return
-*/
+ *
+ * @param leaf
+ * @param current
+ * @return
+ */
 OctreeLeaf *
 OctreeHandler::insert(OctreeLeaf *leaf, OctreeLeaf *current)
 {
@@ -37,7 +37,7 @@ OctreeHandler::erase(OctreeLeaf *current)
         return;
     }
 
-    for (auto child : *current)
+    for (var child : *current)
     {
         erase(child);
     }
@@ -53,7 +53,7 @@ OctreeHandler::print(OctreeLeaf *leaf)
         return;
     }
 
-    for (auto &child : *leaf)
+    for (var child : *leaf)
     {
         print(child);
     }
@@ -73,7 +73,7 @@ OctreeHandler::findNearest(std::vector<OctreeLeaf *> &vertices, Pos3 &position, 
     {
         vertices.insert(vertices.begin(), current);
 
-        for (OctreeLeaf *leaf : *current)
+        for (var leaf : *current)
         {
             findNearest(vertices, position, leaf);
         }
@@ -87,7 +87,7 @@ OctreeHandler::findNearest(std::vector<OctreeLeaf *> &vertices, Pos3 &position, 
     {
         vertices.insert(vertices.begin(), current);
 
-        for (OctreeLeaf *leaf : *current)
+        for (var leaf : *current)
         {
             findNearest(vertices, position, leaf);
         }
@@ -104,7 +104,7 @@ OctreeHandler::iterateNext(OctreeLeaf *leaf, std::function<void(const Pos3 *posi
 
     doSomething(leaf->getPosition());
 
-    for (OctreeLeaf *child : *leaf)
+    for (var child : *leaf)
     {
         iterateNext(child, doSomething);
     }
@@ -251,7 +251,7 @@ OctreeHandler::furthestPointAccordingToDirection(Octree* o, Pos3 &direction)
     o->foreach([&](const Pos3 *position) {
         float product = Pos3Handler::dotProduct(direction, *(Pos3 *)position);
 
-        if (product > maxProduct) 
+        if (product > maxProduct)
         {
             maxProduct = product;
             furthest = (Pos3 *)position;

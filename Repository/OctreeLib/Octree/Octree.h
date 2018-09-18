@@ -12,7 +12,7 @@
 
 class Octree {
 public:
-    Octree();
+    Octree(std::string name);
 
     void insert(const Vertex *position);
     void print();
@@ -21,6 +21,7 @@ public:
     size_t getCount();
     bool empty();
     const Pos3 *getRoot();
+    std::string getName();
 
     OctreeLeaf *findNearest(Pos3 &position);
     const Pos3 *furthestPointAccordingToDirection(Pos3 &direction);
@@ -29,6 +30,7 @@ public:
 
     ~Octree();
 protected:
+    std::string name;
     OctreeLeaf *root;
     size_t count;
 };

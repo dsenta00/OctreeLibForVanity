@@ -71,3 +71,5 @@
 #include <map>
 #include <algorithm>
 #include <iostream>
+
+#define var auto &

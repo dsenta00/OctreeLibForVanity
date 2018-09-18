@@ -8,3 +8,5 @@ typedef struct { Pos3 position; } Vertex;
 
 #include <string>
 #include <sstream>
+
+#define var auto &

@@ -11,7 +11,11 @@ namespace OctreeTest
 {
     TEST_CLASS(OctreeTest)
     {
-        Pos3 CENTER_AXIS = Pos3{ 0.0f, 0.0f, 0.0f };
+        Pos3 CENTER_AXIS = Pos3{
+            0.0f,
+            0.0f,
+            0.0f
+        };
     public:
 
         /**
@@ -27,19 +31,19 @@ namespace OctreeTest
                 "object (3)",
             };
 
-            for each (std::string &result in results)
+            for each (var result in results)
             {
                 Assert::IsNull(Repository::get(result));
             }
 
-            for each (std::string &result in results)
+            for each (var result in results)
             {
                 std::string persistedName = Repository::create("object");
                 std::cout << persistedName << std::endl;
                 Assert::AreEqual(persistedName, result);
             }
 
-            for each (std::string &result in results)
+            for each (var result in results)
             {
                 Octree *octree = Repository::get(result);
 
@@ -67,7 +71,7 @@ namespace OctreeTest
                 { Pos3{ 2.0f, 0.0f, 1.0f } }
             };
 
-            for (auto &vertex : vertices)
+            for (var vertex : vertices)
             {
                 OctreeLeaf *nearestPos = octree->findNearest(vertex.position);
 
@@ -80,13 +84,13 @@ namespace OctreeTest
                     Assert::IsNotNull(nearestPos);
                 }
 
-                std::cout << std::string("\t -- A lambda: -> Persisting vertex ")
-                    .append(Pos3Handler::toString(&vertex.position))
-                    .append(" to octree ")
-                    .append(persistedName)
-                    .append(" and closest point (so far in the same octree) is ")
-                    .append((nearestPos == nullptr) ? "(null)" : nearestPos->toString())
-                    .append(" ... \n") << std::endl;
+                Logger::WriteMessage(std::string("\t -- A lambda: -> Persisting vertex ")
+                                     .append(Pos3Handler::toString(&vertex.position))
+                                     .append(" to octree ")
+                                     .append(persistedName)
+                                     .append(" and closest point (so far in the same octree) is ")
+                                     .append((nearestPos == nullptr) ? "(null)" : nearestPos->toString())
+                                     .append(" ... \n").c_str());
 
                 Repository::addVertex(persistedName, &vertex);
             }
@@ -117,7 +121,7 @@ namespace OctreeTest
                 { Pos3{ 0, 0, 1 } }
             };
 
-            for (auto &vertex : cubeVertices)
+            for (var vertex : cubeVertices)
             {
                 Repository::addVertex(cubeName, &vertex);
             }
@@ -132,7 +136,7 @@ namespace OctreeTest
                 { Pos3{ 1, 1, 0 } }
             };
 
-            for (auto &vertex : triangleVertices)
+            for (var vertex : triangleVertices)
             {
                 Repository::addVertex(triangleName, &vertex);
             }
@@ -151,7 +155,7 @@ namespace OctreeTest
                 { Pos3{ 13, 13, 12 } }
             };
 
-            for (auto &vertex : anotherTriangleVertices)
+            for (var vertex : anotherTriangleVertices)
             {
                 Repository::addVertex(anotherTriangleName, &vertex);
             }

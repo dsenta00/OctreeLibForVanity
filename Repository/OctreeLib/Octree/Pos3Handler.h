@@ -21,6 +21,15 @@ namespace Pos3Handler {
     std::string toString(const Pos3 *vertex);
 
     /**
+     * Position to wide string.
+     *
+     * @param vertex - the position pointer
+     *
+     * @return the wstring
+     */
+    std::wstring toWideString(const Pos3 *vertex);
+
+    /**
      * Subtract two positions.
      *
      * @param v1 - first position

@@ -9,10 +9,16 @@
 #include "Octree.h"
 #include "OctreeHandler.h"
 
-Octree::Octree()
+/**
+ * The constructor.
+ *
+ * @param name - the name
+ */
+Octree::Octree(std::string name)
 {
     this->root = nullptr;
     this->count = 0;
+    this->name = name;
 }
 
 void
@@ -62,15 +68,17 @@ Octree::empty()
     return this->count == 0;
 }
 
-Octree::~Octree()
-{
-    this->clear();
-}
-
 const Pos3 * 
 Octree::getRoot()
 {
     return !this->root ? nullptr : this->root->getPosition();
+}
+
+
+std::string 
+Octree::getName()
+{
+    return this->name;
 }
 
 const Pos3 *
@@ -99,4 +107,9 @@ Pos3
 Octree::averagePoint()
 {
     return OctreeHandler::averagePoint(this);
+}
+
+Octree::~Octree()
+{
+    this->clear();
 }

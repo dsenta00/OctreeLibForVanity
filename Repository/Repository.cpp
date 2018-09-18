@@ -54,7 +54,7 @@ Repository::create(std::string name)
     int i = 0;
     std::string persistName = createUniqueName(name);
 
-    repo[persistName] = std::shared_ptr<Octree>(new Octree());
+    repo[persistName] = std::shared_ptr<Octree>(new Octree(name));
 
     return persistName;
 }
@@ -101,7 +101,7 @@ Repository::get()
 {
     std::vector<Octree *> result;
 
-    for (auto item : repo)
+    for (var item : repo)
     {
         result.push_back(item.second.get());
     }
