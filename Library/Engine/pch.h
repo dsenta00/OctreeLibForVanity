@@ -49,7 +49,7 @@
 #  ifndef DIRECTX_DATA_STRUCTURES
 #  define DIRECTX_DATA_STRUCTURES
      typedef DirectX::XMFLOAT3 Pos3;
-     typedef DirectX::VertexPosition Vertex;
+     typedef DirectX::VertexPositionColor Vertex;
 #  endif
 #
 #else

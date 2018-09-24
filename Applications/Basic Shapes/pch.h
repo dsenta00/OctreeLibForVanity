@@ -2,9 +2,11 @@
 #pragma once
 
 // pch.h
+
 #ifndef DIRECTX_APP
 #define DIRECTX_APP
-#endif
+#endif // !DIRECTX_APP
+
 
 // Vanity includes
 #include "..\..\..\Library\Engine\pch.h"
@@ -21,3 +23,4 @@
 #include "..\..\..\Library\Engine\Core\Content\SampleFpsTextRenderer.h"
 
 // Standard C++ includes
+//#include <typeinfo>
