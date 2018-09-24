@@ -33,7 +33,7 @@ namespace vxe {
          */
         void checkCollisionAndPrint()
         {
-            DebugPrint(std::string("\t -- A lambda: Checking collision ... \n"));
+            DebugPrint(std::string("\t ... Checking collision ... \n"));
 
             var octrees = Repository::get();
 
@@ -51,6 +51,9 @@ namespace vxe {
                     }
                 }
             }
+
+
+            DebugPrint(std::string("\t ... End checking collision ... \n"));
         }
 
         /**
@@ -59,23 +62,36 @@ namespace vxe {
         void addNewOctree()
         {
             std::string persistedName = Repository::create("object");
+            Octree *octree = Repository::get(persistedName);
 
-            DebugPrint(std::string("\t -- A lambda: Persisted empty octree named ")
+            DebugPrint(std::string("\t -- Persisted empty octree named ")
                        .append(persistedName)
                        .append(" ... \n"));
 
             for (uint32_t i = 0; i < _vertexcount; i++)
             {
-                DirectX::VertexPosition *vertex = &_vertices[i];
-                const Pos3 *nearestPos = Repository::get(persistedName)->findNearest(vertex->position)->getPosition();
+                DirectX::VertexPosition *vertex = &this->_vertices[i];
 
-                DebugPrint(std::string("\t -- A lambda: -> Persisting vertex ")
-                           .append(Pos3Handler::toString(&vertex->position))
-                           .append(" to octree ")
-                           .append(persistedName)
-                           .append(" and closest point (so far in the same octree) is ")
-                           .append(Pos3Handler::toString(nearestPos))
-                           .append(" ... \n"));
+                if (!octree->empty())
+                {
+                    const Pos3 *nearestPos = Repository::get(persistedName)->findNearest(vertex->position)->getPosition();
+
+                    DebugPrint(std::string("\t -- Persisting vertex ")
+                               .append(Pos3Handler::toString(&vertex->position))
+                               .append(" to octree ")
+                               .append(persistedName)
+                               .append(" and closest point (so far in the same octree) is ")
+                               .append(Pos3Handler::toString(nearestPos))
+                               .append(" ... \n"));
+                }
+                else
+                {
+                    DebugPrint(std::string("\t -- Persisting vertex ")
+                               .append(Pos3Handler::toString(&vertex->position))
+                               .append(" to octree ")
+                               .append(persistedName)
+                               .append(" ... \n"));
+                }
 
                 Repository::addVertex(persistedName, (Vertex *)vertex);
             }
@@ -86,8 +102,8 @@ namespace vxe {
                                             std::vector<U>& indices,
                                             D3D11_PRIMITIVE_TOPOLOGY topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
         {
-            DebugPrint(std::string("\t MeshBase<") + typeid(T).name() +
-                       std::string(",") + typeid(U).name() + std::string(">::CreateAsync() ...\n"));
+            /*DebugPrint(std::string("\t MeshBase<") + typeid(T).name() +
+                       std::string(",") + typeid(U).name() + std::string(">::CreateAsync() ...\n"));*/
 
             DebugPrint(std::string("\t\t Primitive Topology: ") + std::to_string(topology) + std::string("\n"));
 
@@ -101,10 +117,10 @@ namespace vxe {
 
                 //	if (vertices.empty()) throw std::exception("...");
 
+                _vertexbuffer = std::make_shared<VertexBuffer<T>>(device, &vertices[0], _vertexcount);
+
                 addNewOctree();
                 checkCollisionAndPrint();
-
-                _vertexbuffer = std::make_shared<VertexBuffer<T>>(device, &vertices[0], _vertexcount);
 
                 if (!indices.empty())
                 {

@@ -24,7 +24,7 @@ namespace vxe {
 
 		concurrency::task<void> CreateAsync(_In_ ID3D11Device2* device, const std::wstring& filename) override
 		{
-			DebugPrint(std::string("\t PixelShader::CreateAsync() ...\n"));
+			DebugPrint(std::string("\t PixelShader::CreateAsync(") + std::string((char *)filename.c_str()) + std::string("...\n"));
 
 			return concurrency::create_task(DX::ReadDataAsync(filename)).then([this, device](const std::vector<byte> data) {
 

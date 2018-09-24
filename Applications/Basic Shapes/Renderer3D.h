@@ -71,7 +71,7 @@ namespace vxe
 		std::shared_ptr<VertexShader<DirectX::VertexPositionColor>> _vertexshader;
 		std::shared_ptr<PixelShader> _pixelshader;
 
-		std::shared_ptr<MeshBase<DirectX::VertexPositionColor, unsigned short>> _model;
+		std::vector<std::shared_ptr<MeshBase<DirectX::VertexPositionColor, unsigned short>>> _models;
 
 		std::shared_ptr<WorldTransforms> _world;
 		std::shared_ptr<ViewTransform> _view;

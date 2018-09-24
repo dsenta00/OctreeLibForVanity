@@ -34,19 +34,21 @@ void Renderer3D::CreateDeviceDependentResources()
 	auto vstask = _vertexshader->CreateAsync(device, L"Vertex Shader.cso");
 	tasks.push_back(vstask);
 
+    DebugPrint(std::string("Miljenko...\n"));
 	_pixelshader = make_shared<PixelShader>();
 	tasks.push_back(_pixelshader->CreateAsync(device, L"Pixel Shader.cso"));
 
-	//_model = make_shared<Pyramid<VertexPositionColor, unsigned short>>();
-	//_model = make_shared<Cube<VertexPositionColor, unsigned short>>();
-	//_model = make_shared<Triangle<VertexPositionColor, unsigned short>>();
+    _models.push_back(make_shared<Pyramid<VertexPositionColor, unsigned short>>());
+    _models.push_back( make_shared<Cube<VertexPositionColor, unsigned short>>());
+    _models.push_back(make_shared<Triangle<VertexPositionColor, unsigned short>>());
+    /*_models.push_back(make_shared<ExplicitSurface<VertexPositionColor, unsigned short>>(20.0f, 20.0f, 100, 100, [](float x, float z) {
+        return 10 * expf(-(powf(x, 2.0f)) / 16.0f) * expf(-(powf(z, 2.0f)) / 16.0f);
+    }));*/
 
-	_model = make_shared<ExplicitSurface<VertexPositionColor, unsigned short>>(20.0f, 20.0f, 100, 100,
-		[](float x, float z) {
-		return 10 * expf(-(powf(x, 2.0f)) / 16.0f) * expf(-(powf(z, 2.0f)) / 16.0f);
-	});
-	
-	tasks.push_back(_model->CreateAsync(device));
+    for (auto &_model : _models)
+    {
+        tasks.push_back(_model->CreateAsync(device));
+    }
 
 	when_all(tasks.begin(), tasks.end()).then([this]() {
 		m_loadingComplete = true;
@@ -110,7 +112,10 @@ void Renderer3D::Render()
 
 	SetCamera();
 
-	Draw(_model, _world);
+    for (auto &_model : _models) 
+    {
+        Draw(_model, _world);
+    }
 
 	m_deviceResources->SetRasterizerState();
 }
@@ -124,7 +129,11 @@ void Renderer3D::ReleaseDeviceDependentResources()
 	_vertexshader->Reset();
 	_pixelshader->Reset();
 
-	_model->Reset();
+    for (auto &_model : _models) 
+    {
+        _model->Reset();
+    }
+
 	_world->Reset();
 	_view->Reset();
 	_projection->Reset();
