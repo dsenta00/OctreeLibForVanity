@@ -23,7 +23,6 @@ namespace OctreeTest
          */
         TEST_METHOD(TestCreateAndGet)
         {
-
             std::string results[4] = {
                 "object",
                 "object (1)",
@@ -57,7 +56,7 @@ namespace OctreeTest
 
         TEST_METHOD(TestCreateAndInsertVertex)
         {
-            std::string persistedName = Repository::create("object");
+            var persistedName = Repository::create("object");
             Octree *octree = Repository::get(persistedName);
 
             Assert::IsNotNull(octree);
@@ -84,11 +83,11 @@ namespace OctreeTest
                     Assert::IsNotNull(nearestPos);
                 }
 
-                Logger::WriteMessage(std::string("\t -- A lambda: -> Persisting vertex ")
+                Logger::WriteMessage(std::string("\t-> Persisting vertex ")
                                      .append(Pos3Handler::toString(&vertex.position))
-                                     .append(" to octree ")
+                                     .append(" to octree \"")
                                      .append(persistedName)
-                                     .append(" and closest point (so far in the same octree) is ")
+                                     .append("\" and closest point (so far in the same octree) is ")
                                      .append((nearestPos == nullptr) ? "(null)" : nearestPos->toString())
                                      .append(" ... \n").c_str());
 
@@ -96,16 +95,18 @@ namespace OctreeTest
             }
         }
 
+
         TEST_METHOD(TestObjectCollision)
         {
-            std::string cubeName = Repository::create("cube");
+            var cubeName = Repository::create("cube");
             Octree *cube = Repository::get(cubeName);
             Assert::IsNotNull(cube);
 
-            std::string triangleName = Repository::create("triangle");
+            var triangleName = Repository::create("triangle");
             Octree *triangle = Repository::get(triangleName);
             Assert::IsNotNull(triangle);
 
+            Logger::WriteMessage("Check if EMPTY cube does not collide with a EMPTY triangle!");
             Assert::IsFalse(cube->collidesWith(*triangle));
             Assert::IsFalse(triangle->collidesWith(*cube));
 
@@ -126,6 +127,7 @@ namespace OctreeTest
                 Repository::addVertex(cubeName, &vertex);
             }
 
+            Logger::WriteMessage("Check if cube does not collide with a EMPTY triangle!");
             Assert::IsFalse(cube->collidesWith(*triangle));
             Assert::IsFalse(triangle->collidesWith(*cube));
 
@@ -141,11 +143,17 @@ namespace OctreeTest
                 Repository::addVertex(triangleName, &vertex);
             }
 
-            Assert::IsTrue(cube->collidesWith(*triangle));
+            Logger::WriteMessage(std::to_string(cube->getCount()).c_str());
+            Logger::WriteMessage(std::to_string(triangle->getCount()).c_str());
+
+            Logger::WriteMessage("Check if triangle collides with a cube!");
             Assert::IsTrue(triangle->collidesWith(*cube));
 
+            Logger::WriteMessage("Check if cube collides with a triangle!");
+            Assert::IsTrue(cube->collidesWith(*triangle));
+
             // ------- TRIANGLE FAR AWAY ------- 
-            std::string anotherTriangleName = Repository::create("triangle");
+            var anotherTriangleName = Repository::create("triangle");
             Octree *anotherTriangle = Repository::get(anotherTriangleName);
             Assert::IsNotNull(anotherTriangle);
 
@@ -160,6 +168,7 @@ namespace OctreeTest
                 Repository::addVertex(anotherTriangleName, &vertex);
             }
 
+            Logger::WriteMessage("Check if cube does not collide with another triangle!");
             Assert::IsFalse(cube->collidesWith(*anotherTriangle));
             Assert::IsFalse(anotherTriangle->collidesWith(*cube));
         };

@@ -57,5 +57,5 @@ OctreeLeaf::getPosition()
 std::string 
 OctreeLeaf::toString()
 {
-    return Pos3Handler::toString(&v->position);
+    return Pos3Handler::toString(this->getPosition());
 }

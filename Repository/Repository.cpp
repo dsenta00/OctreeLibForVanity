@@ -51,8 +51,7 @@ createUniqueName(std::string name)
 std::string
 Repository::create(std::string name)
 {
-    int i = 0;
-    std::string persistName = createUniqueName(name);
+    var persistName = createUniqueName(name);
 
     repo[persistName] = std::shared_ptr<Octree>(new Octree(name));
 
@@ -88,7 +87,7 @@ Repository::addVertex(std::string name, const Vertex *vertex)
 Octree *
 Repository::get(std::string name)
 {
-    auto it = repo.find(name);
+    var it = repo.find(name);
 
     return it == repo.end() ? nullptr : it->second.get();
 }

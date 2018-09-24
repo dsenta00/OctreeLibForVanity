@@ -46,7 +46,8 @@ namespace vxe {
                         DebugPrint(std::string("\t -- \tCollision detected -> ")
                                    .append(octrees[i]->getName())
                                    .append(" and ")
-                                   .append(octrees[j]->getName()));
+                                   .append(octrees[j]->getName())
+                                   .append(" ... \n"));
                     }
                 }
             }
@@ -67,13 +68,13 @@ namespace vxe {
             {
                 var nearestPos = Repository::get(persistedName)->findNearest(vertex.position)->getPosition();
 
-                std::cout << std::string("\t -- A lambda: -> Persisting vertex ")
-                    .append(Pos3Handler::toString(&vertex.position))
-                    .append(" to octree ")
-                    .append(persistedName)
-                    .append(" and closest point (so far in the same octree) is ")
-                    .append(Pos3Handler::toString(nearestPos))
-                    .append(" ... \n") << std::endl;
+                DebugPrint(std::string("\t -- A lambda: -> Persisting vertex ")
+                           .append(Pos3Handler::toString(&vertex.position))
+                           .append(" to octree ")
+                           .append(persistedName)
+                           .append(" and closest point (so far in the same octree) is ")
+                           .append(Pos3Handler::toString(nearestPos))
+                           .append(" ... \n"));
 
                 Repository::addVertex(persistedName, &vertex);
             }
@@ -104,7 +105,7 @@ namespace vxe {
 
                 _vertexbuffer = std::make_shared<VertexBuffer<T>>(device, &vertices[0], _vertexcount);
 
-                if (!indices.empty()) 
+                if (!indices.empty())
                 {
                     DebugPrint(std::string("\t -- A lambda: Creating an IB ... \n"));
                     _indexed = true;
@@ -113,12 +114,12 @@ namespace vxe {
                     _indices = const_cast<U*> (&indices[0]);
                     _indexbuffer = std::make_shared<IndexBuffer<U>>(device, violent_cast<void *> (&indices[0]), _indexcount);
 
-                    if (typeid(U) == typeid (unsigned short)) 
+                    if (typeid(U) == typeid (unsigned short))
                     {
                         _format = DXGI_FORMAT_R16_UINT;
                         DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R16_UINT \n"));
                     }
-                    else 
+                    else
                     {
                         _format = DXGI_FORMAT_R32_UINT;
                         DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R32_UINT \n"));
@@ -156,23 +157,23 @@ namespace vxe {
                 addNewOctree(_vertices);
                 checkCollisionAndPrint();
 
-                if (_indexcount != 0) 
+                if (_indexcount != 0)
                 {
                     _indexed = true;
                     _indexbuffer = std::make_shared<IndexBuffer<U>>(device, violent_cast<void *> (_indices), _indexcount);
 
-                    if (typeid(U) == typeid (unsigned short)) 
+                    if (typeid(U) == typeid (unsigned short))
                     {
                         _format = DXGI_FORMAT_R16_UINT;
                         DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R16_UINT \n"));
                     }
-                    else 
+                    else
                     {
                         _format = DXGI_FORMAT_R32_UINT;
                         DebugPrint(std::string("\t\t Index Format: DXGI_FORMAT_R32_UINT \n"));
                     }
                 }
-                else 
+                else
                 {
                     _indexed = false;
                 }

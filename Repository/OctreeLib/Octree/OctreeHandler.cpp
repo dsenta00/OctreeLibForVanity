@@ -18,7 +18,7 @@
 OctreeLeaf *
 OctreeHandler::insert(OctreeLeaf *leaf, OctreeLeaf *current)
 {
-    if (current == nullptr)
+    if (!current)
     {
         return leaf;
     }
@@ -32,7 +32,7 @@ OctreeHandler::insert(OctreeLeaf *leaf, OctreeLeaf *current)
 void
 OctreeHandler::erase(OctreeLeaf *current)
 {
-    if (current == nullptr)
+    if (!current)
     {
         return;
     }
@@ -48,7 +48,7 @@ OctreeHandler::erase(OctreeLeaf *current)
 void
 OctreeHandler::print(OctreeLeaf *leaf)
 {
-    if (leaf == nullptr)
+    if (!leaf)
     {
         return;
     }
@@ -64,7 +64,7 @@ OctreeHandler::print(OctreeLeaf *leaf)
 void
 OctreeHandler::findNearest(std::vector<OctreeLeaf *> &vertices, Pos3 &position, OctreeLeaf *current)
 {
-    if (current == nullptr)
+    if (!current)
     {
         return;
     }
@@ -81,7 +81,7 @@ OctreeHandler::findNearest(std::vector<OctreeLeaf *> &vertices, Pos3 &position, 
         return;
     }
 
-    auto currentClosest = vertices.front();
+    var currentClosest = vertices.front();
 
     if (current->distanceFrom(&position) < currentClosest->distanceFrom(&position))
     {
@@ -97,7 +97,7 @@ OctreeHandler::findNearest(std::vector<OctreeLeaf *> &vertices, Pos3 &position, 
 void
 OctreeHandler::iterateNext(OctreeLeaf *leaf, std::function<void(const Pos3 *position)> doSomething)
 {
-    if (leaf == nullptr)
+    if (!leaf)
     {
         return;
     }
@@ -115,7 +115,7 @@ OctreeHandler::averagePoint(Octree *o)
 {
     Pos3 result = { 0.0f, 0.0f, 0.0f };
 
-    if (o->getCount() == 0)
+    if (o->empty())
     {
         /* This is just the early return, nothing to calculate here .. */
         return result;
@@ -147,7 +147,7 @@ OctreeHandler::minkowskiSumSupport(Octree *o1, Octree *o2, Pos3 &direction)
 }
 
 /**
- * Gilbert-Johnson-Keerthi (GJK) collision detection algorithm in 2D
+ * Gilbert-Johnson-Keerthi (GJK) collision detection algorithm in 3D
  * http://www.dyn4j.org/2010/04/gjk-gilbert-johnson-keerthi/
  * http://mollyrocket.com/849
  */

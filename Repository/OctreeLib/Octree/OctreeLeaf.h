@@ -11,6 +11,9 @@
 
 #define NUMBER_OF_LEAFS (8)
 
+/**
+ * The octree leaf.
+ */
 class OctreeLeaf : public std::array<OctreeLeaf *, NUMBER_OF_LEAFS> {
 public:
     OctreeLeaf(const Vertex *);
