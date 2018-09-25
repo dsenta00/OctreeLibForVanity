@@ -11,9 +11,11 @@
 #if defined(__cplusplus_winrt)
 #include "Repository/OctreeLib/Octree/OctreeHandler.h"
 #include "Repository/OctreeLib/Octree/Pos3Handler.h"
+#include "Utilities.h"
 #else
 #include "OctreeLib/Octree/OctreeHandler.h"
 #include "OctreeLib/Octree/Pos3Handler.h"
+#include "../Utilities.h"
 #endif
 
 // PRIVATE REPOSITORY GLOBAL VARIABLE
@@ -51,9 +53,9 @@ createUniqueName(std::string name)
 std::string
 Repository::create(std::string name)
 {
-    var persistName = createUniqueName(name);
+    std::string persistName = createUniqueName(name);
 
-    repo[persistName] = std::shared_ptr<Octree>(new Octree(name));
+    repo[persistName] = std::make_shared<Octree>(persistName);
 
     return persistName;
 }

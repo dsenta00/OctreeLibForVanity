@@ -39,9 +39,9 @@ void Renderer3D::CreateDeviceDependentResources()
 	tasks.push_back(_pixelshader->CreateAsync(device, L"Pixel Shader.cso"));
 
     _models.push_back(make_shared<Pyramid<VertexPositionColor, unsigned short>>());
-    _models.push_back( make_shared<Cube<VertexPositionColor, unsigned short>>());
-    _models.push_back(make_shared<Triangle<VertexPositionColor, unsigned short>>());
-    /*_models.push_back(make_shared<ExplicitSurface<VertexPositionColor, unsigned short>>(20.0f, 20.0f, 100, 100, [](float x, float z) {
+    _models.push_back(make_shared<Cube<VertexPositionColor, unsigned short>>());
+    /*_models.push_back(make_shared<Triangle<VertexPositionColor, unsigned short>>());
+    _models.push_back(make_shared<ExplicitSurface<VertexPositionColor, unsigned short>>(20.0f, 20.0f, 100, 100, [](float x, float z) {
         return 10 * expf(-(powf(x, 2.0f)) / 16.0f) * expf(-(powf(z, 2.0f)) / 16.0f);
     }));*/
 

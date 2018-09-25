@@ -43,11 +43,11 @@ namespace vxe {
                 {
                     if (octrees[i]->collidesWith(*octrees[j]))
                     {
-                        DebugPrint(std::string("\t -- \tCollision detected -> ")
+                        DebugPrint(std::string("\t\tCOLLISION DETECTED !!!! -> ")
                                    .append(octrees[i]->getName())
                                    .append(" and ")
                                    .append(octrees[j]->getName())
-                                   .append(" ... \n"));
+                                   .append("\n"));
                     }
                 }
             }
@@ -64,33 +64,33 @@ namespace vxe {
             std::string persistedName = Repository::create("object");
             Octree *octree = Repository::get(persistedName);
 
-            DebugPrint(std::string("\t -- Persisted empty octree named ")
+            DebugPrint(std::string("\tPersisted empty octree named \"")
                        .append(persistedName)
-                       .append(" ... \n"));
+                       .append("\"\n"));
 
             for (uint32_t i = 0; i < _vertexcount; i++)
             {
-                DirectX::VertexPosition *vertex = &this->_vertices[i];
+                DirectX::VertexPosition *vertex = &this->_verticesVector[i];
 
                 if (!octree->empty())
                 {
-                    const Pos3 *nearestPos = Repository::get(persistedName)->findNearest(vertex->position)->getPosition();
+                    const Pos3 *nearestPos = octree->findNearest(vertex->position)->getPosition();
 
-                    DebugPrint(std::string("\t -- Persisting vertex ")
+                    DebugPrint(std::string("\t\tPersisting vertex ")
                                .append(Pos3Handler::toString(&vertex->position))
-                               .append(" to octree ")
+                               .append(" to octree \"")
                                .append(persistedName)
-                               .append(" and closest point (so far in the same octree) is ")
+                               .append("\" and closest point (so far in the same octree) is ")
                                .append(Pos3Handler::toString(nearestPos))
-                               .append(" ... \n"));
+                               .append("\n"));
                 }
                 else
                 {
-                    DebugPrint(std::string("\t -- Persisting vertex ")
+                    DebugPrint(std::string("\t\tPersisting vertex ")
                                .append(Pos3Handler::toString(&vertex->position))
-                               .append(" to octree ")
+                               .append(" to octree \"")
                                .append(persistedName)
-                               .append(" ... \n"));
+                               .append("\"\n"));
                 }
 
                 Repository::addVertex(persistedName, (Vertex *)vertex);
@@ -118,6 +118,7 @@ namespace vxe {
                 //	if (vertices.empty()) throw std::exception("...");
 
                 _vertexbuffer = std::make_shared<VertexBuffer<T>>(device, &vertices[0], _vertexcount);
+                _verticesVector = vertices;
 
                 addNewOctree();
                 checkCollisionAndPrint();
@@ -170,9 +171,11 @@ namespace vxe {
                 _indices = reinterpret_cast<U*>(p + 2 * sizeof(unsigned int) + sizeof(T) * _vertexcount);
 
                 _vertexbuffer = std::make_shared<VertexBuffer<T>>(device, _vertices, _vertexcount);
+                
+                //_verticesVector initialization IMPLEMENT TODO
 
-                addNewOctree();
-                checkCollisionAndPrint();
+                //addNewOctree();
+                //checkCollisionAndPrint();
 
                 if (_indexcount != 0)
                 {
@@ -247,6 +250,7 @@ namespace vxe {
         unsigned _vertexcount;
         std::shared_ptr<VertexBuffer<T>> _vertexbuffer;
         T* _vertices;
+        std::vector<T> _verticesVector;
 
         bool _indexed;
         unsigned _indexcount;

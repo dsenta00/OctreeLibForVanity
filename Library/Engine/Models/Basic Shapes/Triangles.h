@@ -30,9 +30,9 @@ namespace vxe {
 			DebugPrint(std::string("\t Triangle<PositionColorVertex, unsigned short>::CreateAsync() ...\n"));
 
 			std::vector<DirectX::VertexPositionColor> vertices = {
-				DirectX::VertexPositionColor(DirectX::XMFLOAT3(0.0f, 0.866f, 0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)),
-				DirectX::VertexPositionColor(DirectX::XMFLOAT3(1.0f, -0.866f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)),
-				DirectX::VertexPositionColor(DirectX::XMFLOAT3(-1.0f, -0.866f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f))
+				DirectX::VertexPositionColor(DirectX::XMFLOAT3(14.0f, 14.866f, 14.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)),
+				DirectX::VertexPositionColor(DirectX::XMFLOAT3(15.0f, 13.866f, 14.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)),
+				DirectX::VertexPositionColor(DirectX::XMFLOAT3(13.0f, 13.866f, 14.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f))
 			};
 
 			std::vector<unsigned short> indices = { 0, 1, 2 };

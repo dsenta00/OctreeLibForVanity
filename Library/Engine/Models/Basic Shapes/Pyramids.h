@@ -29,11 +29,11 @@ namespace vxe {
 			DebugPrint(std::string("\t Pyramid<PositionColorVertex, unsigned short>::CreateAsync() ...\n"));
 
 			std::vector<DirectX::VertexPositionColor> vertices = {
-				DirectX::VertexPositionColor(DirectX::XMFLOAT3(-1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)),
-				DirectX::VertexPositionColor(DirectX::XMFLOAT3(1.0f, -1.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f)),
-				DirectX::VertexPositionColor(DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)),
-				DirectX::VertexPositionColor(DirectX::XMFLOAT3(1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)),
-				DirectX::VertexPositionColor(DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f))
+				DirectX::VertexPositionColor(DirectX::XMFLOAT3(0.0f, 0.0f, 2.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)),
+				DirectX::VertexPositionColor(DirectX::XMFLOAT3(2.0f, 0.0f, 2.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f)),
+				DirectX::VertexPositionColor(DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)),
+				DirectX::VertexPositionColor(DirectX::XMFLOAT3(2.0f, 0.0f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)),
+				DirectX::VertexPositionColor(DirectX::XMFLOAT3(1.0f, 2.0f, 1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f))
 			};
 
 			std::vector<unsigned short> indices = {
